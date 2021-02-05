@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createStructuredSelector} from 'reselect';
+import { createStructuredSelector } from 'reselect';
 
 import './App.css';
 
@@ -12,40 +12,39 @@ import CheckoutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
 
-
-import { selectCurrentUser } from './redux/user/user.selector';
-
-import {checkUserSession} from './redux/user/user.action';
-
+import { selectCurrentUser } from './redux/user/user.selectors';
+import { checkUserSession } from './redux/user/user.actions';
 
 class App extends React.Component {
-
   unsubscribeFromAuth = null;
 
-  componentDidMount(){
+  componentDidMount() {
     const { checkUserSession } = this.props;
     checkUserSession();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
 
-  render(){
+  render() {
     return (
       <div>
-        <Header/>
+        <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
           <Route exact path='/checkout' component={CheckoutPage} />
-          <Route 
-            exact 
-            path='/signin' 
+          <Route
+            exact
+            path='/signin'
             render={() =>
-              this.props.currentUser ? 
-              (<Redirect to='/'></Redirect>) : (<SignInAndSignUpPage></SignInAndSignUpPage>)
-            } 
+              this.props.currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                <SignInAndSignUpPage />
+              )
+            }
           />
         </Switch>
       </div>
@@ -54,7 +53,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser : selectCurrentUser
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -62,5 +61,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  mapStateToProps,mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(App);
